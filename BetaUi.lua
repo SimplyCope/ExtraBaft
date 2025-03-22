@@ -45,3 +45,27 @@ Progression.TextSize = 33
 Progression.FontFace = Font.new("rbxasset://fonts/families/SourceSansPro.json", Enum.FontWeight.Bold, Enum.FontStyle.Normal)
 Progression.Parent = Frame
 
+task.wait(35)
+Progression.Text = "6%"
+
+local Trapfolder = workspace:WaitForChild("Traps")
+
+local traps = {
+    {Trapfolder:FindFirstChild("SingleLaser"), "17%"},
+    {Trapfolder:FindFirstChild("TriLaser"), "21%"},
+    {Trapfolder:FindFirstChild("SpikeWallTrap"), "26%", {{28, "37%"}, {90, "43%"}}},
+    {Trapfolder:FindFirstChild("Sniper"), "68%", {{30, "72%"}}},
+    {Trapfolder:FindFirstChild("BossSniper"), "87%", {{30, "96%"}}}
+}
+
+for _, trap in ipairs(traps) do
+    if trap[1] then
+        Progression.Text = trap[2]
+        if trap[3] then
+            for _, delay in ipairs(trap[3]) do
+                task.wait(delay[1])
+                Progression.Text = delay[2]
+            end
+        end
+    end
+end
