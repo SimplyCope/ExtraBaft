@@ -48,24 +48,27 @@ Progression.Parent = Frame
 task.wait(35)
 Progression.Text = "6%"
 
-local Trapfolder = workspace:WaitForChild("Traps")
-
-local traps = {
-    {Trapfolder:FindFirstChild("SingleLaser"), "17%"},
-    {Trapfolder:FindFirstChild("TriLaser"), "21%"},
-    {Trapfolder:FindFirstChild("SpikeWallTrap"), "26%", {{28, "37%"}, {90, "43%"}}},
-    {Trapfolder:FindFirstChild("Sniper"), "68%", {{30, "72%"}}},
-    {Trapfolder:FindFirstChild("BossSniper"), "87%", {{30, "96%"}}}
+local progressionData = {
+    {condition = SingleLaser, progress = "17%"},
+    {condition = ThreeLaser, progress = "21%"},
+    {condition = SpikeWalls, progress = "32%", waitTime = 28, nextProgress = "42%", nextWaitTime = 90, finalProgress = "57%"},
+    {condition = Sniper, progress = "68%", waitTime = 30, nextProgress = "72%"},
+    {condition = BossSniper, progress = "87%", waitTime = 30, nextProgress = "94%"},
+    {condition = EggSplat, progress = "100%"}
 }
 
-for _, trap in ipairs(traps) do
-    if trap[1] then
-        Progression.Text = trap[2]
-        if trap[3] then
-            for _, delay in ipairs(trap[3]) do
-                task.wait(delay[1])
-                Progression.Text = delay[2]
-            end
+for _, data in ipairs(progressionData) do
+    if data.condition then
+        Progression.Text = data.progress
+        
+        if data.waitTime then
+            task.wait(data.waitTime)
+            Progression.Text = data.nextProgress
+        end
+        if data.nextWaitTime then
+            task.wait(data.nextWaitTime)
+            Progression.Text = data.finalProgress
         end
     end
 end
+
